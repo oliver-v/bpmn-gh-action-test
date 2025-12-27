@@ -29,7 +29,7 @@ async function run() {
                     owner,
                     repo,
                     name: "BPMN Diagram Preview",
-                    head_sha: pr.head.sha,
+                    head_sha: github.context.payload.pull_request.head.sha,
                     status: "completed",
                     conclusion: "neutral",
                     details_url: detailsUrl,
