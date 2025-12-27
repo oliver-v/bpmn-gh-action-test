@@ -1,9 +1,7 @@
-name: "Simple GH Action"
-description: "Prints a message"
 inputs:
-  message:
-    description: "Message to print"
+  github_token:
+    description: "GitHub token from the workflow"
     required: true
 runs:
   using: "node20"
-  main: "index.js"
+  main: "dist/index.js"
