@@ -27,7 +27,6 @@ async function run() {
         conclusion: conclusion
     };
 
-
     for (const file of files.data) {
         if (file.filename.includes('.bpmn')) {
             obj.conclusion = 'neutral'
@@ -36,12 +35,7 @@ async function run() {
                 title: "Process model changes",
                 summary: "Click **Details** to open the interactive BPMN viewer.\n\n"
             };
-
-            break;
         }
-
-        core.info("Process model contains changes. Check the details.");
-        // console.log(`${file.status}: ${file.filename}`);
     }
 
     await octokit.rest.checks.create(obj);
