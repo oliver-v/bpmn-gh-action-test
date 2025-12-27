@@ -29,7 +29,7 @@ async function run() {
                     owner,
                     repo,
                     issue_number: prNumber,
-                    body: '<div>This is a test comment</div>'
+                    body: '<span style="color: red;">This is a test comment</span>'
                 })
                 core.warning("Check the PR!");
             }
