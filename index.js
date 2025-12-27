@@ -29,7 +29,7 @@ async function run() {
                     owner,
                     repo,
                     issue_number: prNumber,
-                    body: '<span style="color: red;">This is a test comment</span>'
+                    body: `Process model changes: <iframe src="https://flow-diff.vercel.app/diff?pr_id=${prNumber}"></iframe>`
                 })
                 core.warning("Check the PR!");
             }
