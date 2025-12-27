@@ -24,9 +24,11 @@ async function run() {
         });
 
         for (const file of files.data) {
+            if (file.filename.includes('.bpmn')) {
+                core.setFailed("Check the PR!");
+            }
             console.log(`${file.status}: ${file.filename}`);
         }
-
     } catch (error) {
         core.setFailed(error.message);
     }
