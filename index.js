@@ -2,52 +2,47 @@ const core = require("@actions/core");
 const github = require("@actions/github");
 
 async function run() {
-    try {
-        const token = core.getInput("github_token");
-        const octokit = github.getOctokit(token);
+    const token = core.getInput("github_token");
+    const octokit = github.getOctokit(token);
 
-        // The workflow is triggered by a pull_request event
-        const { pull_request } = github.context.payload;
+    const { pull_request } = github.context.payload;
+    const { owner, repo } = github.context.repo;
+    const prNumber = pull_request.number;
 
-        if (!pull_request) {
-            core.setFailed("This workflow must be triggered by a pull request.");
-            return;
+    const files = await octokit.rest.pulls.listFiles({
+        owner,
+        repo,
+        pull_number: prNumber,
+    });
+
+    let conclusion = 'success';
+    let title = '✅ No Process model changes detected';
+
+    const obj = {
+        owner,
+        repo,
+        name: title,
+        head_sha: github.context.payload.pull_request.head.sha,
+        status: "completed",
+        conclusion: conclusion
+    };
+
+
+    for (const file of files.data) {
+        if (file.filename.includes('.bpmn')) {
+            conclusion = 'neutral'
+            title = "⚠️ Process model has changes";
+            obj.output = {
+                title: "Process model changes",
+                summary: "Click **Details** to open the interactive BPMN viewer.\n\n"
+            };
         }
 
-        const { owner, repo } = github.context.repo;
-        const prNumber = pull_request.number;
-
-        const files = await octokit.rest.pulls.listFiles({
-            owner,
-            repo,
-            pull_number: prNumber,
-        });
-
-        for (const file of files.data) {
-            if (file.filename.includes('.bpmn')) {
-                await octokit.rest.checks.create({
-                    owner,
-                    repo,
-                    name: "BPMN Diagram Preview",
-                    head_sha: github.context.payload.pull_request.head.sha,
-                    status: "completed",
-                    conclusion: "neutral",
-                    details_url: "https://flow-diff.vercel.app/diff",
-                    output: {
-                        title: "Interactive BPMN Diagram",
-                        summary:
-                            "Click **Details** to open the interactive BPMN viewer.\n\n" +
-                            "Changes are based on the current pull request.",
-                    },
-                });
-
-                core.info("Process model contains changes. Check the details.");
-            }
-            console.log(`${file.status}: ${file.filename}`);
-        }
-    } catch (error) {
-        core.setFailed(error.message);
+        core.info("Process model contains changes. Check the details.");
+        // console.log(`${file.status}: ${file.filename}`);
     }
+
+    await octokit.rest.checks.create(obj);
 }
 
 run();
