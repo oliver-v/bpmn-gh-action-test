@@ -25,13 +25,23 @@ async function run() {
 
         for (const file of files.data) {
             if (file.filename.includes('.bpmn')) {
-                octokit.rest.issues.createComment({
+                await octokit.rest.checks.create({
                     owner,
                     repo,
-                    issue_number: prNumber,
-                    body: `Process model changes: <iframe src="https://flow-diff.vercel.app/diff?pr_id=${prNumber}"></iframe>`
-                })
-                core.warning("Check the PR!");
+                    name: "BPMN Diagram Preview",
+                    head_sha: pr.head.sha,
+                    status: "completed",
+                    conclusion: "neutral",
+                    details_url: detailsUrl,
+                    output: {
+                        title: "Interactive BPMN Diagram",
+                        summary:
+                            "Click **Details** to open the interactive BPMN viewer.\n\n" +
+                            "Changes are based on the current pull request.",
+                    },
+                });
+
+                core.info("Process model contains changes. Check the details.");
             }
             console.log(`${file.status}: ${file.filename}`);
         }
