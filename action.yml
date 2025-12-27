@@ -1,0 +1,9 @@
+name: "Simple GH Action"
+description: "Prints a message"
+inputs:
+  message:
+    description: "Message to print"
+    required: true
+runs:
+  using: "node20"
+  main: "index.js"
