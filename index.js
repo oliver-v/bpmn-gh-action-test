@@ -30,12 +30,14 @@ async function run() {
 
     for (const file of files.data) {
         if (file.filename.includes('.bpmn')) {
-            conclusion = 'neutral'
-            title = "⚠️ Process model has changes";
+            obj.conclusion = 'neutral'
+            obj.name = "⚠️ Process model has changes";
             obj.output = {
                 title: "Process model changes",
                 summary: "Click **Details** to open the interactive BPMN viewer.\n\n"
             };
+
+            break;
         }
 
         core.info("Process model contains changes. Check the details.");
