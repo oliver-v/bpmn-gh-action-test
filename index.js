@@ -32,7 +32,7 @@ async function run() {
                     head_sha: github.context.payload.pull_request.head.sha,
                     status: "completed",
                     conclusion: "neutral",
-                    details_url: detailsUrl,
+                    details_url: "https://flow-diff.vercel.app/diff",
                     output: {
                         title: "Interactive BPMN Diagram",
                         summary:
