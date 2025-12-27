@@ -25,7 +25,13 @@ async function run() {
 
         for (const file of files.data) {
             if (file.filename.includes('.bpmn')) {
-                core.setFailed("Check the PR!");
+                octokit.rest.issues.createComment({
+                    owner,
+                    repo,
+                    issue_number: prNumber,
+                    body: '<div>This is a test comment</div>'
+                })
+                core.warning("Check the PR!");
             }
             console.log(`${file.status}: ${file.filename}`);
         }
