@@ -30,10 +30,10 @@ async function run() {
     for (const file of files.data) {
         if (file.filename.includes('.bpmn')) {
             obj.conclusion = 'neutral'
-            obj.name = "<a href='https://flow-diff.vercel.app/diff'>⚠️ ⚠️ ⚠️ Process model changes ⚠️ ⚠️ ⚠️</a>";
+            obj.name = "⚠️ ⚠️ ⚠️ Process model changes ⚠️ ⚠️ ⚠️";
             obj.output = {
                 title: "Process model changes",
-                summary: "Click **Details** to open the interactive BPMN viewer.\n\n"
+                summary: "<a href='https://flow-diff.vercel.app/diff'>Go to the details.</a>"
             };
         }
     }
