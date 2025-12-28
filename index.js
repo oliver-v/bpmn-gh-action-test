@@ -16,7 +16,7 @@ async function run() {
     });
 
     let conclusion = 'success';
-    let title = '✅ No Process model changes detected';
+    let title = '✅ No Process model changes';
 
     const obj = {
         owner,
@@ -30,7 +30,7 @@ async function run() {
     for (const file of files.data) {
         if (file.filename.includes('.bpmn')) {
             obj.conclusion = 'neutral'
-            obj.name = "⚠️ Process model has changes";
+            obj.name = "<a href='https://flow-diff.vercel.app/diff'>⚠️ ⚠️ ⚠️ Process model changes ⚠️ ⚠️ ⚠️</a>";
             obj.output = {
                 title: "Process model changes",
                 summary: "Click **Details** to open the interactive BPMN viewer.\n\n"
